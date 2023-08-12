@@ -1,33 +1,36 @@
-import 'package:flutter/services.dart';
 import 'package:flutter_restaurant/common/styles.dart';
-import 'package:flutter_restaurant/data/model/restaurant.dart';
+import 'package:flutter_restaurant/data/model/list_restaurant.dart';
+import 'package:flutter_restaurant/provider/get_all_restaurant_provider.dart';
 import 'package:flutter_restaurant/ui/restaurant_detail_page.dart';
-import 'package:flutter_restaurant/widgets/dicoding_image.dart';
+import 'package:flutter_restaurant/utils/dicoding_image_url.dart';
+import 'package:flutter_restaurant/utils/result_state.dart';
 import 'package:flutter_restaurant/widgets/platform_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RestaurantListPage extends StatelessWidget {
   const RestaurantListPage({Key? key}) : super(key: key);
 
-  Widget _buildList(BuildContext context) {
-    return FutureBuilder<String>(
-      future: rootBundle.loadString('assets/restaurants.json'),
-      builder: (context, snapshot) {
-        if (snapshot.data != null) {
-          final RestaurantResponse restaurantResponse =
-              restaurantResponseFromJson(snapshot.data ?? "{}");
-          final List<Restaurant> restaurants = restaurantResponse.restaurants;
-          return ListView.builder(
-            itemCount: restaurants.length,
-            itemBuilder: (context, index) {
-              return _buildRestaurantItem(context, restaurants[index]);
-            },
-          );
-        } else {
-          return const Text("Invalid JSON");
+  Widget _buildList() {
+
+    return Consumer<GetAllRestaurantProvider>(
+      builder: (context, state, _) {
+        if(state.state == ResultState.loading){
+          return const Center(child: CircularProgressIndicator());
+        }else if(state.state == ResultState.error){
+          return Center(child: Text(state.message));
+        }else if(state.state == ResultState.noData){
+          return Center(child: Text(state.message));
         }
-      },
+
+        return ListView.builder(
+            itemCount: state.result.length,
+            itemBuilder: (context, index) {
+              return _buildRestaurantItem(context, state.result[index]);
+            }
+        );
+      }
     );
   }
 
@@ -42,7 +45,9 @@ class RestaurantListPage extends StatelessWidget {
               height: 200,
               child: FittedBox(
                   fit: BoxFit.cover,
-                  child: DicodingImage(imageId: restaurant.pictureId)),
+                  child: Image.network(
+                    getDicodingImageURL(restaurant.pictureId)
+                  )),
             )),
         title: Text(restaurant.name,
             style: const TextStyle(
@@ -86,7 +91,7 @@ class RestaurantListPage extends StatelessWidget {
           style: TextStyle(color: whiteColor),
         ),
       ),
-      body: _buildList(context),
+      body: _buildList(),
     );
   }
 
@@ -96,7 +101,7 @@ class RestaurantListPage extends StatelessWidget {
         middle: Text('Puth Food'),
         transitionBetweenRoutes: false,
       ),
-      child: _buildList(context),
+      child: _buildList(),
     );
   }
 
