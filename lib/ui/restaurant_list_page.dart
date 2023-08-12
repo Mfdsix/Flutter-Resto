@@ -64,7 +64,7 @@ class RestaurantListPage extends StatelessWidget {
                 ),
                 Text(
                   restaurant.rating.toString(),
-                  style: TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: 12),
                 )
               ],
             )

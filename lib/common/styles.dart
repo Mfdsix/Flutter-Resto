@@ -7,30 +7,30 @@ const Color whiteColor = Color(0xFFFFFFFF);
 const Color greyColor = Color(0xFFEEEEEE);
 
 final TextTheme myTextTheme = TextTheme(
-  headline1: GoogleFonts.merriweather(
+  displayLarge: GoogleFonts.merriweather(
       fontSize: 92, fontWeight: FontWeight.w300, letterSpacing: -1.5),
-  headline2: GoogleFonts.merriweather(
+  displayMedium: GoogleFonts.merriweather(
       fontSize: 57, fontWeight: FontWeight.w300, letterSpacing: -0.5),
-  headline3:
+  displaySmall:
       GoogleFonts.merriweather(fontSize: 46, fontWeight: FontWeight.w400),
-  headline4: GoogleFonts.merriweather(
+  headlineMedium: GoogleFonts.merriweather(
       fontSize: 32, fontWeight: FontWeight.w400, letterSpacing: 0.25),
-  headline5:
+  headlineSmall:
       GoogleFonts.merriweather(fontSize: 23, fontWeight: FontWeight.w400),
-  headline6: GoogleFonts.merriweather(
+  titleLarge: GoogleFonts.merriweather(
       fontSize: 19, fontWeight: FontWeight.w500, letterSpacing: 0.15),
-  subtitle1: GoogleFonts.merriweather(
+  titleMedium: GoogleFonts.merriweather(
       fontSize: 15, fontWeight: FontWeight.w400, letterSpacing: 0.15),
-  subtitle2: GoogleFonts.merriweather(
+  titleSmall: GoogleFonts.merriweather(
       fontSize: 13, fontWeight: FontWeight.w500, letterSpacing: 0.1),
-  bodyText1: GoogleFonts.libreFranklin(
+  bodyLarge: GoogleFonts.libreFranklin(
       fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.5),
-  bodyText2: GoogleFonts.libreFranklin(
+  bodyMedium: GoogleFonts.libreFranklin(
       fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.25),
-  button: GoogleFonts.libreFranklin(
+  labelLarge: GoogleFonts.libreFranklin(
       fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: 1.25),
-  caption: GoogleFonts.libreFranklin(
+  bodySmall: GoogleFonts.libreFranklin(
       fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.4),
-  overline: GoogleFonts.libreFranklin(
+  labelSmall: GoogleFonts.libreFranklin(
       fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
 );
