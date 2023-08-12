@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class SettingsPage extends StatelessWidget {
+class Settings extends StatelessWidget {
   static const String settingsTitle = 'Settings';
 
-  const SettingsPage({Key? key}) : super(key: key);
+  const Settings({Key? key}) : super(key: key);
 
   Widget _buildAndroid(BuildContext context) {
     return Scaffold(

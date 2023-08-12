@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/api/api_service.dart';
 import 'package:flutter_restaurant/data/model/detail_restaurant.dart';
@@ -7,7 +9,8 @@ class GetRestaurantByIdProvider extends ChangeNotifier {
   final ApiService apiService;
   final String restaurantId;
 
-  GetRestaurantByIdProvider({required this.apiService, required this.restaurantId}) {
+  GetRestaurantByIdProvider(
+      {required this.apiService, required this.restaurantId}) {
     _fetchData();
   }
 
@@ -27,7 +30,7 @@ class GetRestaurantByIdProvider extends ChangeNotifier {
       notifyListeners();
       final response = await apiService.getRestaurantById(restaurantId);
 
-      if(!response.error){
+      if (!response.error) {
         _state = ResultState.hasData;
         notifyListeners();
         return _fetchResult = response.restaurant;
@@ -36,10 +39,14 @@ class GetRestaurantByIdProvider extends ChangeNotifier {
       _state = ResultState.error;
       notifyListeners();
       return _message = response.message;
+    } on SocketException catch (_) {
+      _state = ResultState.error;
+      notifyListeners();
+      return _message = "Please Check your Internet Connection";
     } catch (e) {
       _state = ResultState.error;
       notifyListeners();
-      return _message = e.toString();
+      return _message = "Failed to Fetch Data";
     }
   }
 }

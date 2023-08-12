@@ -92,3 +92,6 @@ flutter:
 
   assets:
     - assets/restaurants.json
+    - assets/no-data.png
+    - assets/loading.png
+    - assets/search.png

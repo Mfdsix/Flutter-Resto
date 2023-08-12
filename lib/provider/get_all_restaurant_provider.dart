@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/api/api_service.dart';
 import 'package:flutter_restaurant/data/model/list_restaurant.dart';
@@ -26,12 +28,12 @@ class GetAllRestaurantProvider extends ChangeNotifier {
       notifyListeners();
       final response = await apiService.getAllRestaurants();
 
-      if(!response.error){
-        if(response.count == 0){
+      if (!response.error) {
+        if (response.count == 0) {
           _state = ResultState.noData;
           notifyListeners();
           return _message = 'No Restaurant Data';
-        }else{
+        } else {
           _state = ResultState.hasData;
           notifyListeners();
           return _fetchResult = response.restaurants;
@@ -41,10 +43,14 @@ class GetAllRestaurantProvider extends ChangeNotifier {
       _state = ResultState.error;
       notifyListeners();
       return _message = response.message;
+    } on SocketException catch (_) {
+      _state = ResultState.error;
+      notifyListeners();
+      return _message = "Please Check your Internet Connection";
     } catch (e) {
       _state = ResultState.error;
       notifyListeners();
-      return _message = e.toString();
+      return _message = "Failed to Fetch Data";
     }
   }
 }
