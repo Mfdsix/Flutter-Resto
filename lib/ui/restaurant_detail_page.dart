@@ -23,33 +23,42 @@ class RestaurantDetailPage extends StatefulWidget {
 class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: whiteColor),
-          title: const Text(
-            "Puth Food",
-            style: TextStyle(color: whiteColor),
-          ),
-        ),
-        body: ChangeNotifierProvider<GetRestaurantByIdProvider>(
-          create: (_) => GetRestaurantByIdProvider(
-              apiService: ApiService(), restaurantId: widget.restaurantId),
-          child: _buildDetail(),
-        ));
+    return ChangeNotifierProvider<GetRestaurantByIdProvider>(
+      create: (_) => GetRestaurantByIdProvider(
+          apiService: ApiService(), restaurantId: widget.restaurantId),
+      child:
+          Consumer<GetRestaurantByIdProvider>(builder: (context, provider, _) {
+        return _buildAppBar(provider);
+      }),
+    );
   }
 
-  Widget _buildDetail() {
-    return Consumer<GetRestaurantByIdProvider>(builder: (context, state, _) {
-      if (state.state == ResultState.loading) {
-        return const CustomMessage(
-            message: "loading...", assetPath: "assets/loading.png");
-      } else if (state.state == ResultState.error) {
-        return CustomMessage(
-            message: state.message, assetPath: "assets/no-data.png");
-      }
+  Widget _buildAppBar(GetRestaurantByIdProvider provider) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: primaryColor,
+        iconTheme: const IconThemeData(color: whiteColor),
+        title: Text(
+          provider.state == ResultState.hasData
+              ? provider.result.name
+              : "Restaurant Detail",
+          style: const TextStyle(color: whiteColor),
+        ),
+      ),
+      body: _buildDetail(provider),
+    );
+  }
 
-      return buildRestaurantDetail(context, state.result);
-    });
+  Widget _buildDetail(GetRestaurantByIdProvider provider) {
+    if (provider.state == ResultState.loading) {
+      return const CustomMessage(
+          message: "loading...", assetPath: "assets/loading.png");
+    } else if (provider.state == ResultState.error) {
+      return CustomMessage(
+          message: provider.message, assetPath: "assets/no-data.png");
+    }
+
+    return buildRestaurantDetail(context, provider.result);
   }
 
   Widget buildMenuSection(String title, List<Category> menus) {
@@ -173,7 +182,18 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
             ),
             Padding(
                 padding: const EdgeInsets.all(16),
-                child: Text(restaurant.description)),
+                child: Column(
+                  children: [
+                    Text(
+                      restaurant.name,
+                      style: const TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: primaryColor),
+                    ),
+                    Text(restaurant.description),
+                  ],
+                )),
             buildMenuSection("Menu Makanan", restaurant.menus.foods),
             const SizedBox(
               height: 10,

@@ -89,6 +89,7 @@ class RestaurantList extends StatelessWidget {
 
   Widget _buildAndroid(BuildContext context) {
     return Scaffold(
+      backgroundColor: primaryColor,
       appBar: AppBar(
         title: const Text(
           'Puth Food',
@@ -118,7 +119,7 @@ class RestaurantList extends StatelessWidget {
         trailing: IconButton(
           icon: const Icon(
             Icons.search,
-            color: whiteColor,
+            color: primaryColor,
           ),
           onPressed: () {
             Navigator.pushNamed(context, RestaurantSearchPage.routeName);
