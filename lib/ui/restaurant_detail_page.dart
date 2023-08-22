@@ -2,7 +2,8 @@ import 'package:flutter_restaurant/common/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/api/api_service.dart';
 import 'package:flutter_restaurant/data/model/detail_restaurant.dart';
-import 'package:flutter_restaurant/provider/get_restaurant_by_id_provider.dart';
+import 'package:flutter_restaurant/provider/api/get_restaurant_by_id_provider.dart';
+import 'package:flutter_restaurant/provider/database_provider.dart';
 import 'package:flutter_restaurant/utils/dicoding_image_url.dart';
 import 'package:flutter_restaurant/utils/result_state.dart';
 import 'package:flutter_restaurant/widgets/custom_message.dart';
@@ -170,7 +171,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                         Text(
                           restaurant.rating.toString(),
                           style: const TextStyle(fontSize: 18),
-                        )
+                        ),
                       ],
                     )
                   ],
@@ -183,22 +184,32 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
             Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      restaurant.name,
-                      style: const TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: primaryColor),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          restaurant.name,
+                          style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: primaryColor),
+                        ),
+                        buildFavoriteButton(restaurant),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     Text(restaurant.description),
                   ],
                 )),
-            buildMenuSection("Menu Makanan", restaurant.menus.foods),
+            buildMenuSection("Menu Makanan", restaurant.menus?.foods ?? []),
             const SizedBox(
               height: 10,
             ),
-            buildMenuSection("Menu Minuman", restaurant.menus.drinks),
+            buildMenuSection("Menu Minuman", restaurant.menus?.drinks ?? []),
             const SizedBox(
               height: 50,
             ),
@@ -206,5 +217,29 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
         ],
       ),
     );
+  }
+
+  Widget buildFavoriteButton(Restaurant restaurant) {
+    return Consumer<DatabaseProvider>(builder: (context, provider, _) {
+      return FutureBuilder<bool>(
+          future: provider.isFavoriteRestaurant(restaurant.id),
+          builder: (context, snapshot) {
+            var isFavorited = snapshot.data ?? false;
+            return isFavorited
+                ? IconButton(
+                    icon: const Icon(Icons.favorite, color: primaryColor,),
+                    onPressed: () {
+                      provider.removeFavoriteRestaurant(restaurant.id);
+                    },
+                    
+                  )
+                : IconButton(
+                    icon: const Icon(Icons.favorite_border, color: primaryColor),
+                    onPressed: (){
+                      provider.addFavoriteRestaurant(restaurant);
+                    },
+                  );
+          });
+    });
   }
 }

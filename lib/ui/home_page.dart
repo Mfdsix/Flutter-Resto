@@ -1,14 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter_restaurant/common/styles.dart';
-import 'package:flutter_restaurant/data/api/api_service.dart';
-import 'package:flutter_restaurant/provider/get_all_restaurant_provider.dart';
 import 'package:flutter_restaurant/ui/home/restaurant_list.dart';
-import 'package:flutter_restaurant/ui/home/settings_page.dart';
+import 'package:flutter_restaurant/ui/home/settings.dart';
+import 'package:flutter_restaurant/ui/home/restaurant_favorite.dart';
 import 'package:flutter_restaurant/widgets/platform_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home_page';
@@ -21,20 +19,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _bottomNavIndex = 0;
-  static const String _headlineText = 'Selection';
 
   final List<Widget> _listWidget = [
-    ChangeNotifierProvider<GetAllRestaurantProvider>(
-      create: (_) => GetAllRestaurantProvider(apiService: ApiService()),
-      child: const RestaurantList(),
-    ),
+    const RestaurantList(),
+    const RestaurantFavorite(),
     const Settings(),
   ];
 
   final List<BottomNavigationBarItem> _bottomNavBarItems = [
     BottomNavigationBarItem(
-      icon: Icon(Platform.isIOS ? CupertinoIcons.news : Icons.public),
-      label: _headlineText,
+      icon: Icon(Platform.isIOS ? CupertinoIcons.cube_fill : Icons.restaurant),
+      label: 'Home',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Platform.isIOS ? CupertinoIcons.heart_circle : Icons.favorite),
+      label: 'Favorite',
     ),
     BottomNavigationBarItem(
       icon: Icon(Platform.isIOS ? CupertinoIcons.settings : Icons.settings),

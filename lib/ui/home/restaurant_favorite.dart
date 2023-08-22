@@ -1,6 +1,6 @@
 import 'package:flutter_restaurant/common/styles.dart';
-import 'package:flutter_restaurant/data/model/list_restaurant.dart';
-import 'package:flutter_restaurant/provider/api/get_all_restaurant_provider.dart';
+import 'package:flutter_restaurant/data/model/detail_restaurant.dart';
+import 'package:flutter_restaurant/provider/database_provider.dart';
 import 'package:flutter_restaurant/ui/restaurant_detail_page.dart';
 import 'package:flutter_restaurant/ui/restaurant_search_page.dart';
 import 'package:flutter_restaurant/utils/dicoding_image_url.dart';
@@ -11,11 +11,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class RestaurantList extends StatelessWidget {
-  const RestaurantList({Key? key}) : super(key: key);
+class RestaurantFavorite extends StatelessWidget {
+  const RestaurantFavorite({Key? key}) : super(key: key);
 
   Widget _buildList() {
-    return Consumer<GetAllRestaurantProvider>(builder: (context, state, _) {
+    return Consumer<DatabaseProvider>(builder: (context, state, _) {
       if (state.state == ResultState.loading) {
         return const CustomMessage(
             message: "loading...", assetPath: "assets/loading.png");
@@ -91,7 +91,7 @@ class RestaurantList extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Puth Food',
+          'My Favorite',
           style: TextStyle(color: whiteColor),
         ),
         actions: [
@@ -113,7 +113,7 @@ class RestaurantList extends StatelessWidget {
   Widget _buildIos(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: const Text('Puth Food'),
+        middle: const Text('My Favorite'),
         transitionBetweenRoutes: false,
         trailing: IconButton(
           icon: const Icon(

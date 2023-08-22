@@ -2,17 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/common/styles.dart';
 import 'package:flutter_restaurant/data/api/api_service.dart';
 import 'package:flutter_restaurant/data/model/search_restaurant.dart';
-import 'package:flutter_restaurant/provider/search_restaurant_provider.dart';
+import 'package:flutter_restaurant/provider/api/search_restaurant_provider.dart';
 import 'package:flutter_restaurant/ui/restaurant_detail_page.dart';
 import 'package:flutter_restaurant/utils/dicoding_image_url.dart';
 import 'package:flutter_restaurant/utils/result_state.dart';
 import 'package:flutter_restaurant/widgets/custom_message.dart';
 import 'package:provider/provider.dart';
 
-class RestaurantSearchPage extends StatelessWidget {
-  const RestaurantSearchPage({Key? key}) : super(key: key);
-
+class RestaurantSearchPage extends StatefulWidget{
   static const routeName = '/restaurant_search';
+  final String searchType;
+
+  const RestaurantSearchPage({Key? key, this.searchType = "home"}): super(key: key);
+
+  @override
+  State<RestaurantSearchPage> createState() => _RestaurantSearchPageState();  
+}
+
+class _RestaurantSearchPageState extends State<RestaurantSearchPage> {
 
   @override
   Widget build(BuildContext context) {
