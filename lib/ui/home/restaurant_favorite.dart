@@ -2,7 +2,6 @@ import 'package:flutter_restaurant/common/styles.dart';
 import 'package:flutter_restaurant/data/model/detail_restaurant.dart';
 import 'package:flutter_restaurant/provider/database_provider.dart';
 import 'package:flutter_restaurant/ui/restaurant_detail_page.dart';
-import 'package:flutter_restaurant/ui/restaurant_search_page.dart';
 import 'package:flutter_restaurant/utils/dicoding_image_url.dart';
 import 'package:flutter_restaurant/utils/result_state.dart';
 import 'package:flutter_restaurant/widgets/custom_message.dart';
@@ -94,17 +93,6 @@ class RestaurantFavorite extends StatelessWidget {
           'My Favorite',
           style: TextStyle(color: whiteColor),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.search,
-              color: whiteColor,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, RestaurantSearchPage.routeName);
-            },
-          )
-        ],
       ),
       body: _buildList(),
     );
@@ -112,18 +100,9 @@ class RestaurantFavorite extends StatelessWidget {
 
   Widget _buildIos(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: const Text('My Favorite'),
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text('My Favorite'),
         transitionBetweenRoutes: false,
-        trailing: IconButton(
-          icon: const Icon(
-            Icons.search,
-            color: primaryColor,
-          ),
-          onPressed: () {
-            Navigator.pushNamed(context, RestaurantSearchPage.routeName);
-          },
-        ),
       ),
       child: _buildList(),
     );
