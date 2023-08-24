@@ -36,8 +36,8 @@ class RestaurantList extends StatelessWidget {
   }
 
   Widget _buildRestaurantItem(BuildContext context, Restaurant restaurant) {
-    return Material(
-      child: ListTile(
+    return ListTile(
+      key: Key(restaurant.id),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 30.0, horizontal: 16.0),
         leading: Hero(
@@ -83,8 +83,7 @@ class RestaurantList extends StatelessWidget {
           Navigator.pushNamed(context, RestaurantDetailPage.routeName,
               arguments: restaurant.id);
         },
-      ),
-    );
+      );
   }
 
   Widget _buildAndroid(BuildContext context) {

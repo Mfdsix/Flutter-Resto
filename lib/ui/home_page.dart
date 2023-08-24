@@ -1,24 +1,20 @@
 import 'dart:io';
 
 import 'package:flutter_restaurant/common/styles.dart';
+import 'package:flutter_restaurant/provider/home_tab_provider.dart';
 import 'package:flutter_restaurant/ui/home/restaurant_list.dart';
 import 'package:flutter_restaurant/ui/home/settings.dart';
 import 'package:flutter_restaurant/ui/home/restaurant_favorite.dart';
 import 'package:flutter_restaurant/widgets/platform_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
+
+  HomePage({Key? key}): super(key: key);
+
   static const routeName = '/home_page';
-
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _bottomNavIndex = 0;
 
   final List<Widget> _listWidget = [
     const RestaurantList(),
@@ -41,25 +37,19 @@ class _HomePageState extends State<HomePage> {
     ),
   ];
 
-  void _onBottomNavTapped(int index) {
-    setState(() {
-      _bottomNavIndex = index;
-    });
-  }
-
-  Widget _buildAndroid(BuildContext context) {
+  Widget _buildAndroid(BuildContext context, HomeTabProvider provider) {
     return Scaffold(
-      body: _listWidget[_bottomNavIndex],
+      body: _listWidget[provider.navIndex],
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: primaryColor,
-        currentIndex: _bottomNavIndex,
+        currentIndex: provider.navIndex,
         items: _bottomNavBarItems,
-        onTap: _onBottomNavTapped,
+        onTap: (int newIndex) => provider.setNavIndex(newIndex),
       ),
     );
   }
 
-  Widget _buildIos(BuildContext context) {
+  Widget _buildIos(BuildContext context, HomeTabProvider provider) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         items: _bottomNavBarItems,
@@ -73,9 +63,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformWidget(
-      androidBuilder: _buildAndroid,
-      iosBuilder: _buildIos,
-    );
+    return Consumer<HomeTabProvider>(builder: (context, provider, _) {
+      return PlatformWidget(
+        androidBuilder: (BuildContext context) => _buildAndroid(context, provider),
+        iosBuilder: (BuildContext context) => _buildIos(context, provider),
+      );
+    });
   }
 }

@@ -52,8 +52,6 @@ class DatabaseProvider extends ChangeNotifier {
       await databaseHelper.removeFavoriteRestaurantById(restaurantId);
       getFavoriteRestaurants();
     } catch (e) {
-      print("error");
-      print(e.toString());
       _state = ResultState.error;
       _message = 'Failed to Remove Favorite Restaurant';
       notifyListeners();

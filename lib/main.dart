@@ -3,8 +3,8 @@ import 'package:flutter_restaurant/data/api/api_service.dart';
 import 'package:flutter_restaurant/data/db/database_helper.dart';
 import 'package:flutter_restaurant/data/preferences/notification_preference.dart';
 import 'package:flutter_restaurant/provider/api/get_all_restaurant_provider.dart';
-import 'package:flutter_restaurant/provider/api/get_restaurant_by_id_provider.dart';
 import 'package:flutter_restaurant/provider/database_provider.dart';
+import 'package:flutter_restaurant/provider/home_tab_provider.dart';
 import 'package:flutter_restaurant/provider/notification_preference_provider.dart';
 import 'package:flutter_restaurant/provider/scheduling_provider.dart';
 import 'package:flutter_restaurant/ui/restaurant_detail_page.dart';
@@ -29,6 +29,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          ChangeNotifierProvider(
+            create: (_) => HomeTabProvider()),
           ChangeNotifierProvider(
               create: (_) =>
                   GetAllRestaurantProvider(apiService: ApiService())),
